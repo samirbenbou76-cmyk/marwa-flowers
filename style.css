@@ -133,7 +133,7 @@ body {
   transform: translate(-50%, -50%) rotate(0deg);
   width: 4vmin;       /* narrower than before */
   height: 12vmin;     /* taller to match tulip petals */
-  background-color: #ff00aa; /* soft pink tulip glow */
+  background-color: #008cff; /* soft blue tulip glow */
   border-radius: 50% 50% 30% 30% / 60% 60% 40% 40%; /* tulip-like ellipse */
   filter: blur(2vmin); /* soft glow */
   opacity: 0.7;
@@ -208,8 +208,8 @@ body {
   height: 14vmin;
   /* change this line: */
   border-radius: 50% 50% 20% 20% / 100% 100% 30% 30%;
-  background-color: #ff9ed6;
-  background-image: linear-gradient(to top, #ff69b4, #ff9ed6);
+  background-color: #8ecbff;
+  background-image: linear-gradient(to top, #168cff, #8ecbff);
   transform-origin: bottom center;
   opacity: 1;
   box-shadow: inset 0 0 1.5vmin rgba(255, 255, 255, 0.4);
@@ -231,7 +231,7 @@ body {
   width: 5vmin;
   height: 13vmin;
   transform-origin: bottom center;
-  background-image: linear-gradient(to top, #ff69b4, #ff9ed6);
+  background-image: linear-gradient(to top, #168cff, #8ecbff);
   transform: translateX(0%) rotateX(10deg);
   z-index: 1;
   opacity: 0.9;
@@ -251,7 +251,7 @@ body {
   width: 9vmin;
   height: 4vmin;
   border-radius: 50%;
-  background-color: #ff9ed6;
+  background-color: #8ecbff;
 }
 .flower__white-circle::after {
   content: "";
