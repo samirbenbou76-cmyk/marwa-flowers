@@ -141,7 +141,7 @@ body {
 
 .love-message {
   position: absolute;
-  top: 105px;
+  top: 135px;
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
@@ -192,7 +192,7 @@ body {
 /* Smaller phones */
 @media (max-width: 480px) {
   .love-message {
-    top: 90px;
+    top: 120px;
     font-size: 7vw;
   }
 }
