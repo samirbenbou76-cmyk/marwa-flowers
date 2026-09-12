@@ -21,6 +21,44 @@ body {
   padding: 50px 0px;
 }
 
+.snowfall {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+.snowfall--active {
+  opacity: 1;
+}
+
+.snowflake {
+  position: absolute;
+  top: -2vmin;
+  left: var(--snow-left);
+  width: var(--snow-size);
+  height: var(--snow-size);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 0.8vmin rgba(210, 235, 255, 0.85);
+  animation: snowfall-fall var(--snow-duration) linear var(--snow-delay) infinite;
+}
+
+@keyframes snowfall-fall {
+  0% {
+    transform: translate3d(0, -3vmin, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(var(--snow-drift), 50vh, 0) rotate(180deg);
+  }
+  100% {
+    transform: translate3d(calc(var(--snow-drift) * -1), 106vh, 0) rotate(360deg);
+  }
+}
+
 .night {
   position: fixed;
   left: 50%;
