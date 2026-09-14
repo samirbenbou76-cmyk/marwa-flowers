@@ -11,6 +11,25 @@
     
 <body class="not-loaded">
     <div class="snowfall" aria-hidden="true"></div>
+    <div class="night-sky" aria-hidden="true">
+      <svg class="moon" viewBox="0 0 100 100" role="presentation">
+        <defs>
+          <radialGradient id="moon-gradient" cx="34%" cy="28%" r="78%">
+            <stop offset="0%" stop-color="#fffde4" />
+            <stop offset="48%" stop-color="#f6edb4" />
+            <stop offset="100%" stop-color="#c8bd7d" />
+          </radialGradient>
+          <filter id="moon-glow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="2.5" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+        <path class="moon-crescent" d="M 72 7 A 43 43 0 1 0 72 93 A 31 43 0 1 1 72 7 Z" fill="url(#moon-gradient)" filter="url(#moon-glow)" />
+      </svg>
+    </div>
     <div class="night"><div class="love-message">
   <h4></h4>
 </div>
@@ -335,9 +354,30 @@ const messages = [
 let index = 0;
 const loveText = document.querySelector(".love-message h4");
 const snowfall = document.querySelector(".snowfall");
+const nightSky = document.querySelector(".night-sky");
 let snowing = false;
+let nightSkyActive = false;
 let pressTimer;
 let longPressTriggered = false;
+let pendingTapTimer;
+
+function toggleNightSky() {
+  nightSkyActive = !nightSkyActive;
+  nightSky.classList.toggle("night-sky--active", nightSkyActive);
+
+  if (nightSky.childElementCount === 1) {
+    for (let i = 0; i < 75; i += 1) {
+      const star = document.createElement("span");
+      star.className = "star";
+      star.style.setProperty("--star-left", `${4 + Math.random() * 92}%`);
+      star.style.setProperty("--star-top", `${5 + Math.random() * 68}%`);
+      star.style.setProperty("--star-size", `${0.18 + Math.random() * 0.45}vmin`);
+      star.style.setProperty("--star-duration", `${2 + Math.random() * 4}s`);
+      star.style.setProperty("--star-delay", `${Math.random() * -6}s`);
+      nightSky.appendChild(star);
+    }
+  }
+}
 
 function toggleSnowfall() {
   snowing = !snowing;
@@ -376,6 +416,8 @@ document.body.addEventListener("pointerdown", () => {
   longPressTriggered = false;
   pressTimer = setTimeout(() => {
     longPressTriggered = true;
+    clearTimeout(pendingTapTimer);
+    pendingTapTimer = undefined;
     toggleSnowfall();
   }, 2000);
 });
@@ -383,29 +425,40 @@ document.body.addEventListener("pointerdown", () => {
 document.body.addEventListener("pointerup", () => clearTimeout(pressTimer));
 document.body.addEventListener("pointercancel", () => clearTimeout(pressTimer));
 
-// A normal tap changes the message; a long press is ignored here.
+// A normal tap changes the message. A double tap reveals the night sky instead.
 document.body.addEventListener("click", () => {
   if (longPressTriggered) {
     longPressTriggered = false;
     return;
   }
 
-  // Fade out old message
-  loveText.classList.remove("fade-in");
-  loveText.classList.add("hidden-message");
+  if (pendingTapTimer) {
+    clearTimeout(pendingTapTimer);
+    pendingTapTimer = undefined;
+    toggleNightSky();
+    return;
+  }
 
-  // After fade-out animation finishes
-  setTimeout(() => {
-    index = (index + 1) % messages.length;
+  pendingTapTimer = setTimeout(() => {
+    pendingTapTimer = undefined;
 
-    // Update text BEFORE fading in
-    loveText.innerHTML = messages[index];
+    // Fade out old message
+    loveText.classList.remove("fade-in");
+    loveText.classList.add("hidden-message");
 
-    // Fade in new message
-    loveText.classList.remove("hidden-message");
-    loveText.classList.add("fade-in");
+    // After fade-out animation finishes
+    setTimeout(() => {
+      index = (index + 1) % messages.length;
 
-  }, 600); // match CSS fade-out duration
+      // Update text BEFORE fading in
+      loveText.innerHTML = messages[index];
+
+      // Fade in new message
+      loveText.classList.remove("hidden-message");
+      loveText.classList.add("fade-in");
+
+    }, 600); // match CSS fade-out duration
+  }, 280);
 });
 
 </script>
